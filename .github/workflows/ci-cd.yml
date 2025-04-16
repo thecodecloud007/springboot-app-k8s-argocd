@@ -76,7 +76,7 @@ jobs:
           sed -i "s|newTag:.*|newTag: $IMAGE_TAG|" ${{ env.K8S_DIR }}/kustomization.yaml
           
           # Configure Git
-          git config --global user.name "thecodecloud007"
+          git config --global credential.username "thecodecloud007"
           git config --global user.email "thecodecloud.in@gmail.com"
           
           # Commit and push changes
