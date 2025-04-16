@@ -9,4 +9,4 @@ resources:
 images:
   - name: ghcr.io/username/spring-boot-k8s-demo
     newName: ghcr.io/username/spring-boot-k8s-demo
-    newTag: latest
+    newTag: sha-ffd484a
