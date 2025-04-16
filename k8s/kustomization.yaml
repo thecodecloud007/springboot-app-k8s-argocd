@@ -7,6 +7,6 @@ resources:
   - service.yaml
   - configmap.yaml
 images:
-  - name: ghcr.io/username/spring-boot-k8s-demo
-    newName: ghcr.io/username/spring-boot-k8s-demo
+  - name: ghcr.io/thecodecloud007/spring-boot-k8s-demo
+    newName: ghcr.io/thecodecloud007/spring-boot-k8s-demo
     newTag: latest
