@@ -82,6 +82,6 @@ jobs:
           # Commit and push changes
           git add ${{ env.K8S_DIR }}/kustomization.yaml
           git commit -m "Update image tag to $IMAGE_TAG"
-          git push
+          git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
