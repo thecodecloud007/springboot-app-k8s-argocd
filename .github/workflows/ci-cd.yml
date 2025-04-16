@@ -69,19 +69,26 @@ jobs:
       - name: Update Kubernetes manifests
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          # Extract the image tag (short SHA)
-          IMAGE_TAG=$(echo ${{ steps.meta.outputs.tags }} | grep -o "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-[a-f0-9]*" | head -1 | cut -d':' -f2)
+          # Extract the image tag (SHA) from metadata output
+          IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | grep -oP 'sha-\w+' | head -1)
+          
+          # Verify we got a tag
+          if [ -z "$IMAGE_TAG" ]; then
+            echo "Error: Could not extract image tag"
+            exit 1
+          fi
           
           # Update the image tag in the kustomization.yaml file
           sed -i "s|newTag:.*|newTag: $IMAGE_TAG|" ${{ env.K8S_DIR }}/kustomization.yaml
           
           # Configure Git
-          git config --global user.name "thecodecloud007"
-          git config --global user.email "thecodecloud.in@gmail.com"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions@github.com"
           
-          # Commit and push changes
+          # Commit changes
           git add ${{ env.K8S_DIR }}/kustomization.yaml
-          git commit -m "Update image tag to $IMAGE_TAG"
-          git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git commit -m "CI: Update image tag to $IMAGE_TAG"
+          
+          # Push changes using proper authentication
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push origin HEAD:main
