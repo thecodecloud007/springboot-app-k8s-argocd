@@ -13,10 +13,10 @@ env:
   K8S_DIR: k8s
 
 jobs:
-  build:
+  build-and-update:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -69,16 +69,10 @@ jobs:
       - name: Update Kubernetes manifests
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          # Extract the image tag (SHA) from metadata output
+          # Extract the SHA tag
           IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | grep -oP 'sha-\w+' | head -1)
           
-          # Verify we got a tag
-          if [ -z "$IMAGE_TAG" ]; then
-            echo "Error: Could not extract image tag"
-            exit 1
-          fi
-          
-          # Update the image tag in the kustomization.yaml file
+          # Update kustomization.yaml
           sed -i "s|newTag:.*|newTag: $IMAGE_TAG|" ${{ env.K8S_DIR }}/kustomization.yaml
           
           # Configure Git
@@ -89,6 +83,6 @@ jobs:
           git add ${{ env.K8S_DIR }}/kustomization.yaml
           git commit -m "CI: Update image tag to $IMAGE_TAG"
           
-          # Push changes using proper authentication
-          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          # Push changes using the recommended authentication method
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push origin HEAD:main
