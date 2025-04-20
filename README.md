@@ -98,3 +98,8 @@ docker run -p 8080:8080 spring-boot-app
 - Update `application.properties` to modify application settings
 - Edit the Kubernetes manifests in the `k8s` directory to change deployment settings
 - Modify the GitHub Actions workflow in `.github/workflows/ci-cd.yml`
+
+
+<!-- argocd repo add https://github.com/thecodecloud007/springboot-app-k8s-argocd.git --username thecodecloud007 --password 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
+
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -->
