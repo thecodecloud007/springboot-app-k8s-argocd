@@ -19,7 +19,7 @@ spec:
         - name: ghcr-secret
       containers:
       - name: spring-boot-app
-        image: ghcr.io/thecodecloud007/spring-boot-k8s-demo
+        image: ghcr.io/thecodecloud007/springboot-app-k8s-argocd
         # Image tag will be updated by kustomize
         ports:
         - containerPort: 8080
