@@ -9,4 +9,4 @@ resources:
 images:
   - name: ghcr.io/thecodecloud007/spring-boot-k8s-demo
     newName: ghcr.io/thecodecloud007/spring-boot-k8s-demo
-    newTag: sha-3ca19d7
+    newTag: sha-dabb245
